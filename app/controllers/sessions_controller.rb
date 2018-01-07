@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out current_user if current_user
-    redirect_to root_url
+    redirect_to root_url, flash: { success: "Pomyślnie wylogowano!" }
   end
 
   private def redirect_to_root_with_error
