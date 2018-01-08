@@ -1,0 +1,13 @@
+<div class="container pt-4">
+  <div class="row justify-content-md-center">
+    <div class="col-md-4">
+      <%= bootstrap_form_tag url: competitions_path do |f| %>
+        <% option_tags = options_for_select @competition_names_with_json %>
+        <%= f.select :competition_wca_json, option_tags, label: "Zawody" %>
+        <%= f.file_field :competitors_csv_file, label: "Plik CSV z listą zawodników" %>
+
+        <%= f.submit "Wyślij ankiety" %>
+      <% end %>
+    </div>
+  </div>
+</div>

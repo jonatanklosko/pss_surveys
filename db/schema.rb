@@ -10,12 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180106223811) do
+ActiveRecord::Schema.define(version: 20180108154011) do
+
+  create_table "competitions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "wca_competition_id", null: false
+    t.string "name", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "competitors_count", null: false
+    t.datetime "surveys_closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "surveys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "competition_id"
+    t.string "secret_id"
+    t.string "competitor_email", null: false
+    t.integer "competitor_competitions_count"
+    t.boolean "delegate", default: false, null: false
+    t.datetime "submitted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["competition_id"], name: "index_surveys_on_competition_id"
+    t.index ["secret_id"], name: "index_surveys_on_secret_id"
+  end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "wca_user_id", null: false
     t.string "wca_id"
-    t.string "name"
+    t.string "name", null: false
     t.string "avatar_thumb_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

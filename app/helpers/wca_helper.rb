@@ -15,6 +15,18 @@ module WcaHelper
     wca_url "/api/v0#{path}"
   end
 
+  def get_competitions_count_by_wca_id(all_wca_ids)
+    all_wca_ids.each_slice(100).flat_map do |wca_ids|
+      people_json = RestClient.get wca_api_url("/persons"), params: {
+        per_page: 100,
+        wca_ids: wca_ids.join(",")
+      }
+      JSON.parse people_json
+    end
+    .map! { |person_data| [person_data["person"]["wca_id"], person_data["competition_count"]] }
+    .to_h
+  end
+
   def wca_client_id
     ENV["WCA_CLIENT_ID"]
   end

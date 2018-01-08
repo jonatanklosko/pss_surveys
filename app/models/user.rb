@@ -7,4 +7,8 @@ class User < ApplicationRecord
       user.avatar_thumb_url = user_json_data[:avatar][:thumb_url]
     end
   end
+
+  def admin?
+    %w(2013KOSK01 2007POLK01 2011SZAT01 2012TRZA01 2012DROZ02 2014PACE01).include? wca_id
+  end
 end
