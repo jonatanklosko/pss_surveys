@@ -49,4 +49,11 @@ class CompetitionsController < ApplicationController
       redirect_to new_competition_url, flash: { danger: "Operacja nie powiodła się." }
     end
   end
+
+  def index
+    @competitions = Competition.all.order end_date: "desc"
+  end
+
+  def show
+  end
 end

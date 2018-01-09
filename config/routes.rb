@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   get "/wca-callback" => "sessions#create"
   delete "/sign-out" => "sessions#destroy"
 
-  resources :competitions, only: [:new, :create]
+  resources :competitions, only: [:new, :create, :index, :show]
 end
