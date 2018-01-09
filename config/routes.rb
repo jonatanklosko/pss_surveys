@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   delete "/sign-out" => "sessions#destroy"
 
   resources :competitions, only: [:new, :create, :index, :show]
+  resources :surveys, only: [:edit], param: :secret_id
 end

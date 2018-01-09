@@ -1,0 +1,12 @@
+<p>Drogi uczestniku <%= @survey.competition.name %>,</p>
+<p>
+  <% start_date = @survey.competition.start_date.strftime("%-d.%m") %>
+  <% end_date = @survey.competition.end_date.strftime("%-d.%m") %>
+  W <%= start_date == end_date ? "dniu #{start_date}" : "dniach #{start_date} - #{end_date}" %>
+  wziąłeś udział w kolejnych zawodach w sezonie <%= @survey.competition.start_date.year %>.
+  W trosce o jakość organizowanych wydarzeń prosimy o udział w anonimowej ankiecie, oceniającej jakość przedsięwzięcia.
+  Ankieta dostepna jest <%= link_to "tutaj", edit_survey_url(@survey.secret_id) %>.
+</p>
+<p>
+  Z poważaniem,<br>Polskie Stowarzyszenie Speedcubingu
+</p>

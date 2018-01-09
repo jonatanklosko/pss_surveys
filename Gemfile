@@ -7,6 +7,7 @@ gem "uglifier", ">= 1.3.0"
 gem "turbolinks", "~> 5"
 gem "rest-client", "~> 2.0", ">= 2.0.2"
 gem "bootstrap_form", github: "bootstrap-ruby/rails-bootstrap-forms", branch: "master"
+gem "actionmailer-text"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

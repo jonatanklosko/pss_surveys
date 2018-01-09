@@ -44,6 +44,7 @@ class CompetitionsController < ApplicationController
       competition.surveys.build competitor_email: delegate[:email], delegate: true, competitor_competitions_count: competitions_count
     end
     if competition.save
+      competition.surveys.each { |survey| SurveysMailer.send_survey(survey).deliver_now }
       redirect_to competitions_url, flash: { success: "Ankiety zostały wysłane." }
     else
       redirect_to new_competition_url, flash: { danger: "Operacja nie powiodła się." }
