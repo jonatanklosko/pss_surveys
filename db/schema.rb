@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108154011) do
+ActiveRecord::Schema.define(version: 20180110191640) do
 
   create_table "competitions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "wca_competition_id", null: false
@@ -19,6 +19,25 @@ ActiveRecord::Schema.define(version: 20180108154011) do
     t.date "end_date", null: false
     t.integer "competitors_count", null: false
     t.datetime "surveys_closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "survey_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "survey_id"
+    t.bigint "survey_question_id"
+    t.integer "rating", null: false
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["survey_id"], name: "index_survey_answers_on_survey_id"
+    t.index ["survey_question_id"], name: "index_survey_answers_on_survey_question_id"
+  end
+
+  create_table "survey_questions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "question", null: false
+    t.text "description"
+    t.boolean "delegate", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
