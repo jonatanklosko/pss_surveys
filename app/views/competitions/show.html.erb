@@ -15,26 +15,32 @@
         <dd><%= surveys_count_badge @delegate_surveys %></dd>
       </dl>
       <% unless @competition.surveys_closed? %>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#close-surveys-modal">
-          Zamknij ankiety
-        </button>
-        <div class="modal fade" id="close-surveys-modal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Zamknij ankiety</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                Czy jesteś pewien, że chcesz zakończyć poces nadsyłania ankiet i opublikować wyniki?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                <%= link_to "Tak, chcę zamknąć ankiety", competition_close_surveys_path(@competition), method: :post, class: "btn btn-primary" %>
+        <% if @competition.cannot_close_surveys_reasons.any? %>
+          <% @competition.cannot_close_surveys_reasons.each do |reason| %>
+            <%= content_tag :div, reason, class: "alert alert-info" %>
+          <% end %>
+        <% else %>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#close-surveys-modal">
+            Zamknij ankiety
+          </button>
+          <div class="modal fade" id="close-surveys-modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Zamknij ankiety</h5>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  Czy jesteś pewien, że chcesz zakończyć poces nadsyłania ankiet i opublikować wyniki?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                  <%= link_to "Tak, chcę zamknąć ankiety", competition_close_surveys_path(@competition), method: :post, class: "btn btn-primary" %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </div>

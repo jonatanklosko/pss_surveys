@@ -61,8 +61,12 @@ class CompetitionsController < ApplicationController
   end
 
   def close_surveys
-    competition = Competition.find params[:id]
-    competition.touch :surveys_closed_at
-    redirect_to competition_url(competition), flash: { success: "Zamknięto ankiety!" }
+    competition = Competition.includes(:surveys).find params[:id]
+    if competition.cannot_close_surveys_reasons.empty?
+      competition.touch :surveys_closed_at
+      redirect_to competition_url(competition), flash: { success: "Zamknięto ankiety." }
+    else
+      redirect_to competition_url(competition), flash: { danger: "Nie można zamknąć ankiet." }
+    end
   end
 end
