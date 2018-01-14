@@ -59,4 +59,10 @@ class CompetitionsController < ApplicationController
     @competition = Competition.includes(:surveys).find params[:id]
     @delegate_surveys, @competitor_surveys = @competition.surveys.partition &:delegate?
   end
+
+  def close_surveys
+    competition = Competition.find params[:id]
+    competition.touch :surveys_closed_at
+    redirect_to competition_url(competition), flash: { success: "Zamknięto ankiety!" }
+  end
 end

@@ -1,4 +1,4 @@
-{
+if (document.querySelector('.survey-form')) {
   const surveyAnswers = document.querySelectorAll('.survey-form .survey-answer');
   const ratingRadios = document.querySelectorAll('.survey-form .survey-answer input[type="radio"]');
   const ratingMeanBox = document.querySelector('.survey-form .rating-mean');
