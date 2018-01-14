@@ -4,7 +4,8 @@
     <title>Ankiety PSS</title>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+    <!-- Execute JS after parsing HTML. See: https://github.com/turbolinks/turbolinks#loading-your-applications-javascript-bundle -->
+    <%= javascript_include_tag "application", "data-turbolinks-track": "reload", defer: true %>
   </head>
   <body>
     <%= render "layouts/navigation" %>
