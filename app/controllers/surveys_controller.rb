@@ -1,6 +1,9 @@
 class SurveysController < ApplicationController
   def edit
     @survey = Survey.includes(:competition, :survey_answers).find_by! secret_id: params[:secret_id]
+    if @survey.competition.surveys_closed?
+      return redirect_to root_url, flash: { warning: "Czas na wysyłanie ankiet minął." }
+    end
     # If there are not answers initialize them.
     if @survey.survey_answers.empty?
       @survey.survey_questions.each do |question|
