@@ -1,1 +1,22 @@
-<div class="alert alert-danger">UNIMPLEMENTED</div>
+<div class="container pt-4">
+  <div class="row justify-content-md-center">
+    <div class="col-md-8">
+      <h3><%= @competition.name %></h3>
+      <dl>
+        <dt>Data otwarcia ankiet</dt>
+        <dd><%= @competition.created_at.strftime "%-d.%m.%Y %R" %></dd>
+        <% if @competition.surveys_closed? %>
+          <dt>Data zamknięcia ankiet</dt>
+          <dd><%= @competition.surveys_closed_at.strftime "%-d.%m.%Y %R" %></dd>
+        <% end %>
+        <dt>Nadesłane ankiety zawodnicze</dt>
+        <dd><%= surveys_count_badge @competitor_surveys %></dd>
+        <dt>Nadesłane ankiety delegackie</dt>
+        <dd><%= surveys_count_badge @delegate_surveys %></dd>
+      </dl>
+      <% unless @competition.surveys_closed? %>
+        <button type="button" class="btn btn-primary">Zamknij ankiety</button>
+      <% end %>
+    </div>
+  </div>
+</div>

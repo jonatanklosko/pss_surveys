@@ -56,5 +56,7 @@ class CompetitionsController < ApplicationController
   end
 
   def show
+    @competition = Competition.includes(:surveys).find params[:id]
+    @delegate_surveys, @competitor_surveys = @competition.surveys.partition &:delegate?
   end
 end

@@ -10,4 +10,8 @@ class Competition < ApplicationRecord
       competition.end_date = Date.parse(competition_json_data[:end_date])
     end
   end
+
+  def surveys_closed?
+    surveys_closed_at.present?
+  end
 end
