@@ -33,7 +33,6 @@ module SurveysHelper
       data[:competitors_mean_rating] = mean data[:competitors_rating_by_question].values
       data[:delegates_mean_rating] = mean data[:delegates_rating_by_question].values
       data[:total_rating] = mean([*data[:competitors_rating_by_question].values, data[:delegates_mean_rating]]) + data[:competition_size_bonus_points]
-      puts data
     end
   end
 
