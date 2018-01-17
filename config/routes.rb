@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "home#index"
+  root "surveys#index"
 
   get "/sign-in" => "sessions#new"
   get "/wca-callback" => "sessions#create"

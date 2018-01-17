@@ -7,12 +7,17 @@
     </div>
   <% end %>
   <ul class="navbar-nav ml-auto">
-    <li class="nav-item active">
-      <% if signed_in? %>
+    <% if signed_in? %>
+      <li class="nav-item">
+        <%= link_to "Zawody", competitions_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item">
         <%= link_to "Wyloguj", sign_out_path, method: :delete, class: "nav-link" %>
-      <% else %>
+      </li>
+    <% else %>
+      <li class="nav-item">
         <%= link_to "Zaloguj się", sign_in_path, class: "nav-link" %>
-      <% end %>
-    </li>
+      </li>
+    <% end %>
   </ul>
 </nav>
