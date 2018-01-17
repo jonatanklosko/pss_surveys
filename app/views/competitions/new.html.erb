@@ -2,11 +2,17 @@
   <div class="row justify-content-md-center">
     <div class="col-md-4">
       <h3>Dodaj zawody</h3>
-      <%= bootstrap_form_tag url: competitions_path do |f| %>
-        <%= f.select :competition_wca_json, @competition_names_with_json, { label: "Zawody" }, { class: "custom-select" } %>
-        <%= f.file_field :competitors_csv_file, label: "Plik CSV z listą zawodników" %>
-
-        <%= f.submit "Wyślij ankiety" %>
+      <%= form_tag competitions_path, multipart: true do %>
+        <div class="form-group">
+          <%= select_tag :competition_wca_json, options_for_select(@competition_names_with_json), class: "custom-select" %>
+        </div>
+        <div class="form-group">
+          <div class="custom-file">
+            <%= file_field_tag :competitors_csv_file, label: "Plik CSV z listą zawodników", accept: "text/csv" %>
+            <%= label_tag :competitors_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>
+          </div>
+        </div>
+        <%= submit_tag "Wyślij ankiety", class: "btn btn-primary" %>
       <% end %>
     </div>
   </div>
