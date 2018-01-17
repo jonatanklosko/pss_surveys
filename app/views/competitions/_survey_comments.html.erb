@@ -1,0 +1,26 @@
+<% answers_by_question = surveys.flat_map(&:survey_answers).group_by(&:survey_question) %>
+<% element_id = "questions-accordion-" + answers_by_question.keys.map(&:id).join('-') %>
+<div id="<%= element_id %>" data-children=".item">
+  <% answers_by_question.each_with_index do |(question, answers), index| %>
+    <% answers.select! { |answer| answer.comment.present? } %>
+    <div class="item">
+      <a data-toggle="collapse" data-parent="#<%= element_id %>" href="#question-<%= question.id %>">
+        <h5><%= index + 1 %>. <%= question.question %></h5>
+      </a>
+      <div id="question-<%= question.id %>" class="collapse">
+        <% if answers.any? %>
+          <ul class="list-group">
+            <% answers.each do |answer| %>
+              <li class="list-group-item p-2 d-flex justify-content-between align-items-center">
+                <span class="mr-1"><%= answer.comment %></span>
+                <%= rating_badge answer.rating %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <div class="alert alert-info p-2">Brak komentarzy</div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

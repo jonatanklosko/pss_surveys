@@ -14,7 +14,23 @@
         <dt>Nadesłane ankiety delegackie</dt>
         <dd><%= surveys_count_badge @delegate_surveys %></dd>
       </dl>
-      <% unless @competition.surveys_closed? %>
+      <% if @competition.surveys_closed? %>
+        <h4>Komentarze ankietowe</h4>
+        <nav>
+          <div class="nav nav-tabs nav-pills nav-fill" role="tablist">
+            <a class="nav-item nav-link active" data-toggle="tab" href="#nav-competitor-comments" role="tab">Zawodnicy</a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#nav-delegate-comments" role="tab">Delegaci</a>
+          </div>
+        </nav>
+        <div class="tab-content py-3">
+          <div class="tab-pane fade show active" id="nav-competitor-comments" role="tabpanel">
+            <%= render "survey_comments", surveys: @competitor_surveys %>
+          </div>
+          <div class="tab-pane fade" id="nav-delegate-comments" role="tabpanel">
+            <%= render "survey_comments", surveys: @delegate_surveys %>
+          </div>
+        </div>
+      <% else %>
         <% if @competition.cannot_close_surveys_reasons.any? %>
           <% @competition.cannot_close_surveys_reasons.each do |reason| %>
             <%= content_tag :div, reason, class: "alert alert-info" %>
