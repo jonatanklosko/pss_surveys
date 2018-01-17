@@ -25,10 +25,7 @@ class SurveysController < ApplicationController
   end
 
   def index
-    competitions = Competition.surveys_closed.includes surveys: { survey_answers: [:survey_question] }
-    @competitions_with_surveys_data = competitions
-      .map { |competition| [competition, helpers.competition_surveys_data(competition)] }
-      .sort_by! { |_, surveys_data| -surveys_data[:total_rating] }
+    @competitions = Competition.surveys_closed.includes surveys: { survey_answers: [:survey_question] }
   end
 
   private def survey_params

@@ -36,6 +36,12 @@ module SurveysHelper
     end
   end
 
+  def competitions_with_surveys_data(competitions)
+    competitions
+      .map { |competition| [competition, competition_surveys_data(competition)] }
+      .sort_by! { |_, surveys_data| -surveys_data[:total_rating] }
+  end
+
   def format_number(number)
     "%0.2f" % number
   end
