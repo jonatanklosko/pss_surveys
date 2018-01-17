@@ -1,6 +1,8 @@
 class Competition < ApplicationRecord
   has_many :surveys, dependent: :destroy
 
+  scope :surveys_closed, -> { where.not surveys_closed_at: nil }
+
   def self.initialize_from_wca_data(competition_json_data)
     competition_json_data.deep_symbolize_keys!
     Competition.new.tap do |competition|

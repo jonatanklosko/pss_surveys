@@ -1,0 +1,54 @@
+<div class="container-fluid pt-4">
+  <h3>Ranking zawodów na podstawie ankiet</h3>
+  <div class="table-responsive">
+    <table class="table table-hover text-center surveys-table">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Zawody</th>
+          <th>Łącznie</th>
+          <th>Wypełnione ankiety</th>
+          <th>Ocena zawodników</th>
+          <th>Ocena delegatów WCA</th>
+          <th>L. zawodników</th>
+          <th>Bonifikata punktowa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @competitions_with_surveys_data.each_with_index do |(competition, surveys_data), index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= wca_competition_link competition %></td>
+            <td class="font-weight-bold"><%= format_number surveys_data[:total_rating] %></td>
+            <td><%= submitted_surveys_stats competition.surveys %></td>
+            <td class="font-weight-bold">
+              <span class="detailed-ratings-link" data-toggle="tooltip" title="Szczegóły">
+                <span data-toggle="modal" data-target="#competitor-ratings-<%= competition.id %>">
+                  <%= format_number surveys_data[:competitors_mean_rating] %>
+                </span>
+              </span>
+            </td>
+            <td class="font-weight-bold">
+              <span class="detailed-ratings-link" class="rating-details-" data-toggle="tooltip" title="Szczegóły">
+                <span data-toggle="modal" data-target="#delegate-ratings-<%= competition.id %>">
+                  <%= format_number surveys_data[:delegates_mean_rating] %>
+                </span>
+              </span>
+            </td>
+            <td><%= competition.competitors_count %></td>
+            <td class="font-weight-bold"><%= format_number surveys_data[:competition_size_bonus_points] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- Detailed ratings modals -->
+  <% @competitions_with_surveys_data.each do |competition, surveys_data| %>
+    <%= render "ratings_modal", rating_by_question: surveys_data[:competitors_rating_by_question],
+                                id: "competitor-ratings-#{competition.id}",
+                                title: "#{competition.name} - ocena zawodników" %>
+    <%= render "ratings_modal", rating_by_question: surveys_data[:delegates_rating_by_question],
+                                id: "delegate-ratings-#{competition.id}",
+                                title: "#{competition.name} - ocena delegatów" %>
+  <% end %>
+</div>

@@ -34,4 +34,8 @@ module WcaHelper
   def wca_client_secret
     ENV["WCA_CLIENT_SECRET"]
   end
+
+  def wca_competition_link(competition)
+    link_to competition.name, wca_url("/competitions/#{competition.wca_competition_id}"), target: "_blank"
+  end
 end

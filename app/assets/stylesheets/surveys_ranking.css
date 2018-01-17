@@ -1,0 +1,16 @@
+.surveys-table th,
+.surveys-table td {
+  white-space: nowrap;
+}
+
+.ratings-modal .modal-dialog {
+  max-width: 600px;
+}
+
+.rating-badge {
+  font-size: 1em;
+}
+
+.detailed-ratings-link {
+  cursor: pointer;
+}

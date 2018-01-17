@@ -27,6 +27,10 @@ class Survey < ApplicationRecord
     secret_id
   end
 
+  def weight
+    (Math.sqrt(competitor_competitions_count) + Math.cbrt(competitor_competitions_count)) / 2
+  end
+
   private def set_secret_id
     self.secret_id = SecureRandom.uuid
   end
