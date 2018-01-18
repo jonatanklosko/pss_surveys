@@ -4,7 +4,11 @@
       <h3>Zawody w systemie</h3>
       <ul class="list-group">
         <% @competitions.each do |competition| %>
-          <%= link_to competition.name, competition_path(competition), class: "list-group-item list-group-item-action" %>
+          <% if current_user.can_manage_competition? competition %>
+            <%= link_to competition.name, competition_path(competition), class: "list-group-item list-group-item-action" %>
+          <% else %>
+            <%= content_tag :li, competition.name, class: "list-group-item list-group-item-action disabled" %>
+          <% end %>
         <% end %>
       </ul>
       <% if current_user.admin? %>

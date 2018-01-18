@@ -3,7 +3,8 @@ require "csv"
 class CompetitionsController < ApplicationController
   include WcaHelper
 
-  before_action -> { redirect_to_root_unless_user :admin? }
+  before_action -> { redirect_to_root_unless_user :admin? }, except: [:show, :index]
+  before_action -> { redirect_to_root_unless_user :can_manage_competition?, Competition.find(params[:id]) }, only: [:show]
 
   def new
     recent_competitions_json = RestClient.get wca_api_url("/competitions"), params: {

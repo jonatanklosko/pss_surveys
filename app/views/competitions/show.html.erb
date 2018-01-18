@@ -35,7 +35,7 @@
           <% @competition.cannot_close_surveys_reasons.each do |reason| %>
             <%= content_tag :div, reason, class: "alert alert-info" %>
           <% end %>
-        <% else %>
+        <% elsif current_user.admin? %>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#close-surveys-modal">
             Zamknij ankiety
           </button>

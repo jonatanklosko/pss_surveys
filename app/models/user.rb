@@ -14,4 +14,8 @@ class User < ApplicationRecord
   def admin?
     %w(2013KOSK01 2007POLK01 2011SZAT01 2012TRZA01 2012DROZ02 2014PACE01).include? wca_id
   end
+
+  def can_manage_competition?(competition)
+    admin? || organized_competitions.exists?(competition.id)
+  end
 end
