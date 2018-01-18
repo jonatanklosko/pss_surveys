@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110191640) do
+ActiveRecord::Schema.define(version: 20180118174532) do
 
   create_table "competitions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "wca_competition_id", null: false
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 20180110191640) do
     t.datetime "surveys_closed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "competitions_organizers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "organizer_id"
+    t.bigint "competition_id"
+    t.index ["competition_id"], name: "index_competitions_organizers_on_competition_id"
+    t.index ["organizer_id"], name: "index_competitions_organizers_on_organizer_id"
   end
 
   create_table "survey_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

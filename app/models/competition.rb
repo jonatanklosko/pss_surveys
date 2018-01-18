@@ -1,5 +1,7 @@
 class Competition < ApplicationRecord
   has_many :surveys, dependent: :destroy
+  has_and_belongs_to_many :organizers, class_name: "User", join_table: "competitions_organizers",
+                                       association_foreign_key: :organizer_id, dependent: :destroy
 
   scope :surveys_closed, -> { where.not surveys_closed_at: nil }
 

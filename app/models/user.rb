@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_and_belongs_to_many :organized_competitions, class_name: "Competition", join_table: "competitions_organizers",
+                                                   foreign_key: :organizer_id
+
   def self.find_or_initialize_from_wca_data(user_json_data)
     user_json_data.deep_symbolize_keys!
     User.find_or_initialize_by(wca_user_id: user_json_data[:id]).tap do |user|

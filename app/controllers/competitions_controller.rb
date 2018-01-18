@@ -43,6 +43,9 @@ class CompetitionsController < ApplicationController
       competitions_count = competitions_count_by_wca_id[delegate[:wca_id]]
       competition.surveys.build competitor_email: delegate[:email], delegate: true, competitor_competitions_count: competitions_count
     end
+    competition_data[:organizers].each do |organizer|
+      competition.organizers << User.find_or_initialize_from_wca_data(organizer)
+    end
     if competition.save
       competition.surveys.each { |survey| SurveysMailer.send_survey(survey).deliver_now }
       redirect_to competitions_url, flash: { success: "Ankiety zostały wysłane." }
