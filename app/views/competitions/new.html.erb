@@ -11,6 +11,10 @@
             <%= file_field_tag :competitors_csv_file, label: "Plik CSV z listą zawodników", accept: "text/csv" %>
             <%= label_tag :competitors_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>
           </div>
+          <small class="form-text text-muted">
+            Wymagane kolumny pliku to: wca id, country, email.
+            <br>Plik musi zawierać wyłącznie tych zawodników, którzy pojawili się na zawodach.
+          </small>
         </div>
         <%= submit_tag "Wyślij ankiety", class: "btn btn-primary" %>
       <% end %>
