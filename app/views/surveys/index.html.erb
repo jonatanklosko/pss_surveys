@@ -17,9 +17,14 @@
           </tr>
         </thead>
         <tbody>
+          <% previous_rating, ranking_index = [nil, 1] %>
           <% competitions_with_surveys_data.each_with_index do |(competition, surveys_data), index| %>
             <tr>
-              <td><%= index + 1 %></td>
+              <td>
+                <% current_rating = format_number surveys_data[:total_rating] %>
+                <%= ranking_index = (previous_rating == current_rating ? ranking_index : (index + 1)) %>
+                <% previous_rating = current_rating %>
+              </td>
               <td><%= wca_competition_link competition %></td>
               <td class="font-weight-bold"><%= format_number surveys_data[:total_rating] %></td>
               <td><%= submitted_surveys_stats competition.surveys %></td>
