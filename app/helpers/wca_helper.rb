@@ -1,6 +1,6 @@
 module WcaHelper
   def wca_url(path)
-    ENV["WCA_ROOT_URL"] + path
+    wca_root_url + path
   end
 
   def wca_authorization_url
@@ -27,12 +27,16 @@ module WcaHelper
     .to_h
   end
 
+  def wca_root_url
+    Rails.application.secrets.wca_root_url
+  end
+
   def wca_client_id
-    ENV["WCA_CLIENT_ID"]
+    Rails.application.secrets.wca_client_id
   end
 
   def wca_client_secret
-    ENV["WCA_CLIENT_SECRET"]
+    Rails.application.secrets.wca_client_secret
   end
 
   def wca_competition_link(competition)
