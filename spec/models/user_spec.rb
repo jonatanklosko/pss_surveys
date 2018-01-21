@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  it "has a valid factory" do
+    expect(build(:user)).to be_valid
+  end
+
   describe ".find_or_initialize_from_wca_data" do
     let(:user_data) {{
       id: 3,

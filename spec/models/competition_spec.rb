@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Competition, type: :model do
+  it "has a valid factory" do
+    expect(build(:competition)).to be_valid
+  end
+
   describe ".initialize_from_wca_data" do
     let(:competition_data) {{
       id: "Example2018",
