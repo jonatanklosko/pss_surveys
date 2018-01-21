@@ -30,11 +30,11 @@ class CompetitionsController < ApplicationController
     competition.competitors_count = competitors.count
     competitor_wca_ids = competitors.map { |competitor| competitor[:wca_id] }.compact
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids
-    delegate_wca_ids = competition_data[:delegates].map { |delegate| delegate[:wca_id] }
+    competition_manager_wca_ids = competition_data.values_at(:organizers, :delegates).flatten.map { |manager| manager[:wca_id] }.compact
     competitors.each do |competitor|
       if competitor[:country].blank? || competitor[:email].blank?
         return redirect_to new_competition_url, flash: { danger: "Brak wymaganych danych dla zawodnika #{competitor[:name]}." }
-      elsif competitor[:country] == "Poland" && !delegate_wca_ids.include?(competitor[:wca_id])
+      elsif competitor[:country] == "Poland" && !competition_manager_wca_ids.include?(competitor[:wca_id])
         competitions_count = competitions_count_by_wca_id[competitor[:wca_id]] || 0
         competitions_count += 1 # Count the competition that we are currently dealing with assuming results are not posted yet.
         competition.surveys.build competitor_email: competitor[:email], competitor_competitions_count: competitions_count
