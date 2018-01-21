@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
     end
 
     context "when the user already exists" do
-      let!(:user) { User.create! wca_id: "2013KOSK01", wca_user_id: 3, name: "Jonatan Kłosko", avatar_thumb_url: nil }
+      let!(:user) { create :user, wca_user_id: 3, avatar_thumb_url: nil }
 
       it "assigns attributes to the existing user" do
         User.find_or_initialize_from_wca_data(user_data).save!

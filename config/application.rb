@@ -24,5 +24,12 @@ module PssSurveys
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    root_url = URI.parse Rails.application.secrets.root_url
+    config.action_mailer.default_url_options = {
+      protocol: root_url.scheme,
+      host: root_url.host,
+      port: root_url.port,
+    }
   end
 end
