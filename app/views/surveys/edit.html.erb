@@ -14,12 +14,12 @@
             <h5 class="mb-0"><%= answer_form.options[:child_index] + 1 %>. <%= answer_form.object.survey_question.question %></h5>
             <small class="text-muted"><%= answer_form.object.survey_question.description %></small>
             <div class="form-group">
-              <% (1..10).each do |rate| %>
+              <% ratings_with_labels.each do |rating, label| %>
                 <div class="custom-control custom-radio custom-control-inline">
                   <!-- Add ids because Rails fails to set correct [for] on corrseponding <label> elements. -->
-                  <% id = "rate-#{answer_form.options[:child_index]}-#{rate}" %>
-                  <%= answer_form.radio_button :rating, rate, class: "custom-control-input", id: id %>
-                  <%= answer_form.label :rating, rate, class: "custom-control-label", for: id %>
+                  <% id = "rate-#{answer_form.options[:child_index]}-#{rating}" %>
+                  <%= answer_form.radio_button :rating, rating, class: "custom-control-input", id: id %>
+                  <%= answer_form.label :rating, rating, class: "custom-control-label", for: id, data: { toggle: "tooltip" }, title: label %>
                 </div>
               <% end %>
             </div>

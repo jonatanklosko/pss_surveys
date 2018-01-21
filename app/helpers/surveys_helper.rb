@@ -59,4 +59,19 @@ module SurveysHelper
                  end
     content_tag :span, format_number(rating), class: "badge badge-#{badge_type} rating-badge"
   end
+
+  def ratings_with_labels
+    {
+      1 => "Skandal",
+      2 => "Źle",
+      3 => "Bardzo słabo",
+      4 => "Słabo",
+      5 => "Może być",
+      6 => "Poprawnie",
+      7 => "Dobrze",
+      8 => "Bardzo dobrze",
+      9 => "Wspaniale",
+      10 => "Wzorcowo"
+    }
+  end
 end
