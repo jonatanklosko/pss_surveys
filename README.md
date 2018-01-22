@@ -1,24 +1,14 @@
-# README
+# PSS Surveys
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A website meant for collecting feedback from competitors participating in Polish WCA competitions.
 
-Things you may want to cover:
+### Getting started
 
-* Ruby version
+Requirements: Ruby 2.4 and MySQL.
 
-* System dependencies
+- Clone the repository and cd into it: `git clone https://github.com/jonatanklosko/pss_surveys.git && cd pss_surveys`
+- TODO: Elaborate on that
 
-* Configuration
+### Test
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Run all specs with `bundle exec rspec`.
