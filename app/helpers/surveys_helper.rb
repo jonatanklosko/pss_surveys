@@ -62,16 +62,16 @@ module SurveysHelper
 
   def ratings_with_labels
     {
-      1 => "Skandal",
-      2 => "Źle",
-      3 => "Bardzo słabo",
-      4 => "Słabo",
-      5 => "Może być",
-      6 => "Poprawnie",
-      7 => "Dobrze",
-      8 => "Bardzo dobrze",
-      9 => "Wspaniale",
-      10 => "Wzorcowo"
+      1 => "Zlekceważenie punktu. Wykazanie braku szacunku dla uczestników wydarzenia.",
+      2 => "Złe wykonanie punktu, będące powodem licznych trudności.",
+      3 => "Bardzo słabe wykonanie punktu.",
+      4 => "Słabe wykonanie punktu, jednak zostały podjęte wszelkie starania w celu naprawienia błędów.",
+      5 => "Duże braki w tym aspekcie.",
+      6 => "Zauważalne problemy.",
+      7 => "Niewielkie niedociągnięcia.",
+      8 => "Wszystko zgodnie z Regulaminem WCA i Wytycznymi PSS.",
+      9 => "Spełnione warunki na ocenę 8 oraz wykazanie się dodatkową inicjatywą.",
+      10 => "Spełnione warunki na ocenę 8 oraz duża innowacyjność, wyjście poza szablon Regulaminu i Wytycznych."
     }
   end
 end
