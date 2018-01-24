@@ -7,7 +7,9 @@ A website meant for collecting feedback from competitors participating in Polish
 Requirements: Ruby 2.4 and MySQL.
 
 - Clone the repository and cd into it: `git clone https://github.com/jonatanklosko/pss_surveys.git && cd pss_surveys`
-- TODO: Elaborate on that
+- Install third party dependencies: `bundle install && bin/yarn`
+- Create the database: `bin/rails db:setup`
+- Run the server: `bin/rails server`
 
 ### Test
 
