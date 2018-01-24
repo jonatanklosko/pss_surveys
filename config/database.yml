@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: pss_surveys_production
-  username: pss_surveys
-  password: <%= ENV['PSS_SURVEYS_DATABASE_PASSWORD'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>

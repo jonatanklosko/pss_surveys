@@ -28,15 +28,15 @@ module WcaHelper
   end
 
   def wca_root_url
-    Rails.application.secrets.wca_root_url
+    ENV["WCA_ROOT_URL"]
   end
 
   def wca_client_id
-    Rails.application.secrets.wca_client_id
+    ENV["WCA_CLIENT_ID"]
   end
 
   def wca_client_secret
-    Rails.application.secrets.wca_client_secret
+    ENV["WCA_CLIENT_SECRET"]
   end
 
   def wca_competition_link(competition)
