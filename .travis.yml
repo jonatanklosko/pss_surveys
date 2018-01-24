@@ -1,0 +1,6 @@
+language: ruby
+cache:
+  bundler: true
+  yarn: true
+before_script: bundle exec rails db:setup
+script: bundle exec rspec

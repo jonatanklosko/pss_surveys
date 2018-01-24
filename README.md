@@ -1,4 +1,4 @@
-# PSS Surveys
+# PSS Surveys [![Build Status](https://travis-ci.org/jonatanklosko/pss_surveys.svg?branch=master)](https://travis-ci.org/jonatanklosko/pss_surveys)
 
 A website meant for collecting feedback from competitors participating in Polish WCA competitions.
 
