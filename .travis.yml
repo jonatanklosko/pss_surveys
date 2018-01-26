@@ -2,5 +2,7 @@ language: ruby
 cache:
   bundler: true
   yarn: true
-before_script: bundle exec rails db:setup
+before_script:
+  - bundle exec rails db:setup
+  - bundle exec rails assets:precompile
 script: bundle exec rspec
