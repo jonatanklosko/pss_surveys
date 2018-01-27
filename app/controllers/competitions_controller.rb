@@ -21,12 +21,33 @@ class CompetitionsController < ApplicationController
   def create
     competition_data = JSON.parse(params[:competition_wca_json]).deep_symbolize_keys!
     competition = Competition.initialize_from_wca_data competition_data
-    if params[:competitors_csv_file].nil?
-      return redirect_to new_competition_url, flash: { danger: "Nie wskazano pliku z listą zawodników." }
+    if params[:registrations_csv_file].nil? || params[:results_xls_file].nil?
+      return redirect_to new_competition_url, flash: { danger: "Nie wskazano potrzebnych plików." }
     end
-    competitors = CSV.read(params[:competitors_csv_file].path, headers: true, header_converters: :symbol, skip_blanks: true)
+    # Read all registrations (from a registration system).
+    registrations = CSV.read(params[:registrations_csv_file].path, headers: true, header_converters: :symbol, skip_blanks: true)
       .map(&:to_hash)
       .reject { |competitor| competitor.values.all? &:nil? }
+    # Read competitors from competition results (people that have actually participated).
+    # The template can be found here: https://www.worldcubeassociation.org/files/results.xls
+    workbook = Spreadsheet.open params[:results_xls_file].path
+    competitors_worksheet = workbook.worksheets.first
+    competitors = competitors_worksheet.drop(3).take_while(&:second).map do |row|
+      { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
+    end
+    # Extend competitors with emails from registrations data.
+    competitors.each do |competitor|
+      # Assume (name, birth date) to be a unique key.
+      registration = registrations.find do |registration|
+        registration[:name] == competitor[:name] && registration[:birth_date] == competitor[:birth_date]
+      end
+      if registration
+        competitor[:email] = registration[:email]
+      else
+        redirect_to new_competition_url, flash: { danger: "Brak rejestracji dla zawodnika #{competitor[:name]}" } and return
+      end
+    end
+    # Build surveys.
     competition.competitors_count = competitors.count
     competitor_wca_ids = competitors.map { |competitor| competitor[:wca_id] }.compact
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids

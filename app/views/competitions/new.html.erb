@@ -8,12 +8,20 @@
         </div>
         <div class="form-group">
           <div class="custom-file">
-            <%= file_field_tag :competitors_csv_file, label: "Plik CSV z listą zawodników", accept: "text/csv" %>
-            <%= label_tag :competitors_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>
+            <%= file_field_tag :registrations_csv_file, accept: "text/csv" %>
+            <%= label_tag :registrations_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>
           </div>
           <small class="form-text text-muted">
-            Wymagane kolumny pliku to: wca id, country, email.
-            <br>Plik musi zawierać wyłącznie tych zawodników, którzy pojawili się na zawodach.
+            Wymagane kolumny pliku to: name, birth date, email.
+          </small>
+        </div>
+        <div class="form-group">
+          <div class="custom-file">
+            <%= file_field_tag :results_xls_file, accept: "application/vnd.ms-excel" %>
+            <%= label_tag :results_xls_file, "Plik XLS z wynikami", class: "custom-file-label" %>
+          </div>
+          <small class="form-text text-muted">
+            Plik pochodzący z Cubecomps.
           </small>
         </div>
         <%= submit_tag "Wyślij ankiety", class: "btn btn-primary" %>
