@@ -16,6 +16,9 @@ class CompetitionsController < ApplicationController
     @competition_names_with_json = JSON.parse(recent_competitions_json)
       .reject { |competition_data| existing_wca_competition_ids.include? competition_data["id"] }
       .map { |competition_data| [competition_data["name"], competition_data.to_json] }
+    if @competition_names_with_json.empty?
+      redirect_to competitions_url, flash: { info: "Brak nowych zawodów." }
+    end
   end
 
   def create
