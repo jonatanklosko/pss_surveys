@@ -24,43 +24,24 @@ class CompetitionsController < ApplicationController
     if params[:registrations_csv_file].nil? || params[:results_xls_file].nil?
       return redirect_to new_competition_url, flash: { danger: "Nie wskazano potrzebnych plików." }
     end
-    # Read all registrations (from a registration system).
-    registrations = CSV.read(params[:registrations_csv_file].path, headers: true, header_converters: :symbol, skip_blanks: true)
-      .map(&:to_hash)
-      .reject { |competitor| competitor.values.all? &:nil? }
-    # Read competitors from competition results (people that have actually participated).
-    # The template can be found here: https://www.worldcubeassociation.org/files/results.xls
-    workbook = Spreadsheet.open params[:results_xls_file].path
-    competitors_worksheet = workbook.worksheets.first
-    competitors = competitors_worksheet.drop(3).take_while(&:second).map do |row|
-      { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
-    end
-    # Extend competitors with emails from registrations data.
-    competitors.each do |competitor|
-      # Assume (name, birth date) to be a unique key.
-      registration = registrations.find do |registration|
-        registration[:name] == competitor[:name] && registration[:birth_date] == competitor[:birth_date]
-      end
-      if registration
-        competitor[:email] = registration[:email]
-      else
-        redirect_to new_competition_url, flash: { danger: "Brak rejestracji dla zawodnika #{competitor[:name]}" } and return
-      end
+    begin
+      competitors = build_competitors params[:registrations_csv_file], params[:results_xls_file]
+    rescue Exception => error
+      redirect_to new_competition_url, flash: { danger: error } and return
     end
     # Build surveys.
     competition.competitors_count = competitors.count
     competitor_wca_ids = competitors.map { |competitor| competitor[:wca_id] }.compact
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids
     competition_manager_wca_ids = competition_data.values_at(:organizers, :delegates).flatten.map { |manager| manager[:wca_id] }.compact
-    competitors.each do |competitor|
-      if competitor[:country].blank? || competitor[:email].blank?
-        return redirect_to new_competition_url, flash: { danger: "Brak wymaganych danych dla zawodnika #{competitor[:name]}." }
-      elsif competitor[:country] == "Poland" && !competition_manager_wca_ids.include?(competitor[:wca_id])
+    competitors
+      .select { |competitor| competitor[:country] == "Poland" }
+      .reject { |competitor| competition_manager_wca_ids.include? competitor[:wca_id] }
+      .each do |competitor|
         competitions_count = competitions_count_by_wca_id[competitor[:wca_id]] || 0
         competitions_count += 1 # Count the competition that we are currently dealing with assuming results are not posted yet.
         competition.surveys.build competitor_email: competitor[:email], competitor_competitions_count: competitions_count
       end
-    end
     competition_data[:delegates].each do |delegate|
       competitions_count = competitions_count_by_wca_id[delegate[:wca_id]]
       competition.surveys.build competitor_email: delegate[:email], delegate: true, competitor_competitions_count: competitions_count
@@ -92,6 +73,35 @@ class CompetitionsController < ApplicationController
       redirect_to competition_url(competition), flash: { success: "Zamknięto ankiety." }
     else
       redirect_to competition_url(competition), flash: { danger: "Nie można zamknąć ankiet." }
+    end
+  end
+
+  private def build_competitors(registrations_csv_file, results_xls_file)
+    # Read all registrations (from a registration system).
+    registrations = CSV.read(registrations_csv_file.path, headers: true, header_converters: :symbol, skip_blanks: true)
+      .map(&:to_hash)
+      .reject { |competitor| competitor.values.all? &:nil? }
+    # Read competitors from competition results (people that have actually participated).
+    # The template can be found here: https://www.worldcubeassociation.org/files/results.xls
+    workbook = Spreadsheet.open results_xls_file.path
+    competitors_worksheet = workbook.worksheets.first
+    competitors = competitors_worksheet.drop(3).take_while(&:second).map do |row|
+      { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
+    end
+    # Extend competitors with emails from registrations data.
+    competitors.each do |competitor|
+      # Assume (name, birth date) to be a unique identifier.
+      registration = registrations.find do |registration|
+        registration[:name] == competitor[:name] && registration[:birth_date] == competitor[:birth_date]
+      end
+      if registration.nil?
+        raise "Nie znaleziono zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
+      elsif registration[:email].blank?
+        raise "Brak adresu email dla zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
+      elsif competitor[:country].blank?
+        raise "Brak kraju dla zawodnika #{competitor[:name]}."
+      end
+      competitor[:email] = registration[:email]
     end
   end
 end
