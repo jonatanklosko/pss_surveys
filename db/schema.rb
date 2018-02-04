@@ -12,7 +12,10 @@
 
 ActiveRecord::Schema.define(version: 20180118174532) do
 
-  create_table "competitions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "competitions", force: :cascade do |t|
     t.string "wca_competition_id", null: false
     t.string "name", null: false
     t.date "start_date", null: false
@@ -23,14 +26,14 @@ ActiveRecord::Schema.define(version: 20180118174532) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "competitions_organizers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "competitions_organizers", force: :cascade do |t|
     t.bigint "organizer_id"
     t.bigint "competition_id"
     t.index ["competition_id"], name: "index_competitions_organizers_on_competition_id"
     t.index ["organizer_id"], name: "index_competitions_organizers_on_organizer_id"
   end
 
-  create_table "survey_answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "survey_answers", force: :cascade do |t|
     t.bigint "survey_id"
     t.bigint "survey_question_id"
     t.integer "rating", null: false
@@ -41,7 +44,7 @@ ActiveRecord::Schema.define(version: 20180118174532) do
     t.index ["survey_question_id"], name: "index_survey_answers_on_survey_question_id"
   end
 
-  create_table "survey_questions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "survey_questions", force: :cascade do |t|
     t.string "question", null: false
     t.text "description"
     t.boolean "delegate", default: false, null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20180118174532) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "surveys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "surveys", force: :cascade do |t|
     t.bigint "competition_id"
     t.string "secret_id"
     t.string "competitor_email", null: false
@@ -62,7 +65,7 @@ ActiveRecord::Schema.define(version: 20180118174532) do
     t.index ["secret_id"], name: "index_surveys_on_secret_id"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade do |t|
     t.integer "wca_user_id", null: false
     t.string "wca_id"
     t.string "name", null: false

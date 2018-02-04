@@ -2,7 +2,11 @@ language: ruby
 cache:
   bundler: true
   yarn: true
+services:
+  - postgresql
 before_script:
+  - psql -c "CREATE USER pss_surveys WITH PASSWORD 'password';" -U postgres
+  - psql -c "ALTER USER pss_surveys WITH SUPERUSER;" -U postgres
   - bundle exec rails db:setup
   - bundle exec rails assets:precompile
 script: bundle exec rspec

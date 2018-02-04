@@ -4,7 +4,7 @@ A website meant for collecting feedback from competitors participating in Polish
 
 ### Getting started
 
-Requirements: Ruby 2.4 and MySQL.
+Requirements: Ruby 2.4 and PostgreSQL 9.1.
 
 - Clone the repository and cd into it: `git clone https://github.com/jonatanklosko/pss_surveys.git && cd pss_surveys`
 - Install third party dependencies: `bundle install && bin/yarn`
