@@ -15,3 +15,7 @@ Requirements: Ruby 2.4 and PostgreSQL 9.1.
 ### Tests
 
 Run all specs with `bundle exec rspec`.
+
+### Deployment
+
+Run `scripts/setup.sh` to set up full environment needed for the app to run.
