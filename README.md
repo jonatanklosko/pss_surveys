@@ -18,4 +18,7 @@ Run all specs with `bundle exec rspec`.
 
 ### Deployment
 
-Run `scripts/setup.sh` to set up full environment needed for the app to run.
+- To set up full environment needed for the app to work run `deployment/setup.sh`
+- Fill `.env.production` template with appropriate environment variables.
+- Configure Nginx, see `deployment/nginx_config.conf` for initial configuration.
+- In order to set up free SSL certificate with [Let's Encrypt](https://letsencrypt.org) run `deployment/setup_ssl.sh`.
