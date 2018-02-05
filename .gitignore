@@ -23,7 +23,7 @@
 .env*
 !.env.development
 !.env.test
-!/scripts/.env.production_template
+!/deployment/.env.production_template
 
 # Ignore compiled assets
 /public/assets/*
