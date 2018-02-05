@@ -40,7 +40,7 @@ ruby -v
 gem install bundler
 bundle install --deployment --without test development
 # Create file for environment configuration
-touch .env.production
+cp scripts/.env.production_template .env.production
 # Set up the database
 RAILS_ENV=production bin/rails db:setup
 # Compile assets
