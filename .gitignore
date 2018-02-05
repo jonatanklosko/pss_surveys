@@ -24,3 +24,6 @@
 !.env.development
 !.env.test
 !/scripts/.env.production_template
+
+# Ignore compiled assets
+/public/assets/*
