@@ -20,6 +20,22 @@ RSpec.describe SurveysMailer, type: :mailer do
       it "includes survey url" do
         expect(body).to match edit_survey_url(survey)
       end
+
+      context "competitor survey" do
+        it "includes competitor welcome" do
+          expect(body).to match "Drogi uczestniku"
+        end
+      end
+
+      context "delegate survey" do
+        let(:survey) { create :survey, delegate: true }
+        let(:mail) { SurveysMailer.send_survey survey }
+        let(:body) { mail.html_part.body }
+
+        it "includes delegate welcome" do
+          expect(body).to match "Drogi delegacie"
+        end
+      end
     end
   end
 end
