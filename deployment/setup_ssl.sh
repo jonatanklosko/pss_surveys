@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Confirm whether the user aims to run the script
 read -p "Do you want to set up SSL certificate with Let's Encrypt? (y/n) "
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then exit; fi

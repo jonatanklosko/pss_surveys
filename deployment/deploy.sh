@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# Run the subsequent commands from application root level
+cd $(dirname $0)/..
 # Pull changes from remote repository if any
 git pull
 # Install dependencies if needed

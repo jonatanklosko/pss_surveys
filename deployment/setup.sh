@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Confirm whether the user aims to run the script
 read -p "Do you want to install everything needed for the app to run? (y/n) "
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then exit; fi
