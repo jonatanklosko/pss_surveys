@@ -5,7 +5,9 @@
       <ul class="list-group">
         <% @competitions.each do |competition| %>
           <% if current_user.can_manage_competition? competition %>
-            <%= link_to competition.name, competition_path(competition), class: "list-group-item list-group-item-action" %>
+            <%= link_to competition_path(competition), class: "list-group-item list-group-item-action" do %>
+              <%= icon "fas", (competition.surveys_closed? ? "check-square" : "square"), competition.name %>
+            <% end %>
           <% else %>
             <%= content_tag :li, competition.name, class: "list-group-item list-group-item-action disabled" %>
           <% end %>

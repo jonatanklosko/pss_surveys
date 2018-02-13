@@ -4,10 +4,10 @@
       <h3><%= @competition.name %></h3>
       <dl>
         <dt>Data otwarcia ankiet</dt>
-        <dd><%= @competition.created_at.strftime "%-d.%m.%Y %R" %></dd>
+        <dd><%= icon "fas", "hourglass-start", @competition.created_at.strftime("%-d.%m.%Y %R") %></dd>
         <% if @competition.surveys_closed? %>
           <dt>Data zamknięcia ankiet</dt>
-          <dd><%= @competition.surveys_closed_at.strftime "%-d.%m.%Y %R" %></dd>
+          <dd><%= icon "fas", "hourglass-end", @competition.surveys_closed_at.strftime("%-d.%m.%Y %R") %></dd>
         <% end %>
         <dt>Nadesłane ankiety zawodnicze</dt>
         <dd><%= surveys_count_badge @competitor_surveys %></dd>
