@@ -8,7 +8,7 @@
         </div>
         <div class="form-group">
           <div class="custom-file">
-            <%= file_field_tag :registrations_csv_file, accept: "text/csv" %>
+            <%= file_field_tag :registrations_csv_file, accept: ".csv" %>
             <%= label_tag :registrations_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>
           </div>
           <small class="form-text text-muted">
@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
           <div class="custom-file">
-            <%= file_field_tag :results_xlsx_file, accept: "application/vnd.ms-excel" %>
+            <%= file_field_tag :results_xlsx_file, accept: ".xlsx" %>
             <%= label_tag :results_xlsx_file, "Plik xlsx z wynikami", class: "custom-file-label" %>
           </div>
           <small class="form-text text-muted">
