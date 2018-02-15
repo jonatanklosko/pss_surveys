@@ -9,7 +9,7 @@ class CompetitionsController < ApplicationController
   def new
     recent_competitions_json = RestClient.get wca_api_url("/competitions"), params: {
       country_iso2: "PL",
-      start: 1.month.ago.to_date,
+      start: (1.month.ago - 1.week).to_date, # Tmp change for Speed Days Kraśnik 2018
       end: Date.today
     }
     existing_wca_competition_ids = Competition.pluck :wca_competition_id
@@ -24,11 +24,11 @@ class CompetitionsController < ApplicationController
   def create
     competition_data = JSON.parse(params[:competition_wca_json]).deep_symbolize_keys!
     competition = Competition.initialize_from_wca_data competition_data
-    if params[:registrations_csv_file].nil? || params[:results_xls_file].nil?
+    if params[:registrations_csv_file].nil? || params[:results_xlsx_file].nil?
       return redirect_to new_competition_url, flash: { danger: "Nie wskazano potrzebnych plików." }
     end
     begin
-      competitors = build_competitors params[:registrations_csv_file], params[:results_xls_file]
+      competitors = build_competitors params[:registrations_csv_file], params[:results_xlsx_file]
     rescue Exception => error
       redirect_to new_competition_url, flash: { danger: error } and return
     end
@@ -79,16 +79,16 @@ class CompetitionsController < ApplicationController
     end
   end
 
-  private def build_competitors(registrations_csv_file, results_xls_file)
+  private def build_competitors(registrations_csv_file, results_xlsx_file)
     # Read all registrations (from a registration system).
     registrations = CSV.read(registrations_csv_file.path, headers: true, header_converters: :symbol, skip_blanks: true)
       .map(&:to_hash)
       .reject { |competitor| competitor.values.all? &:nil? }
     # Read competitors from competition results (people that have actually participated).
     # The template can be found here: https://www.worldcubeassociation.org/files/results.xls
-    workbook = Spreadsheet.open results_xls_file.path
-    competitors_worksheet = workbook.worksheets.first
-    competitors = competitors_worksheet.drop(3).take_while(&:second).map do |row|
+    workbook = Roo::Spreadsheet.open results_xlsx_file.path
+    competitors_sheet = workbook.sheet('Registration')
+    competitors = competitors_sheet.drop(3).take_while(&:second).map do |row|
       { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
     end
     # Extend competitors with emails from registrations data.

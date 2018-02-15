@@ -8,7 +8,7 @@ gem "turbolinks", "~> 5"
 gem "rest-client", "~> 2.0", ">= 2.0.2"
 gem "actionmailer-text"
 gem "dotenv-rails"
-gem "spreadsheet"
+gem "roo"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
