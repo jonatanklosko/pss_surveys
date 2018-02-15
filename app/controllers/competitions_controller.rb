@@ -9,7 +9,7 @@ class CompetitionsController < ApplicationController
   def new
     recent_competitions_json = RestClient.get wca_api_url("/competitions"), params: {
       country_iso2: "PL",
-      start: (1.month.ago - 1.week).to_date, # Tmp change for Speed Days Kraśnik 2018
+      start: 1.month.ago.to_date,
       end: Date.today
     }
     existing_wca_competition_ids = Competition.pluck :wca_competition_id
