@@ -31,5 +31,8 @@ module PssSurveys
       host: root_url.host,
       port: root_url.port,
     }
+
+    # Set default time zone to display times properly.
+    config.time_zone = "CET"
   end
 end
