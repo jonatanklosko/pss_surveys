@@ -8,7 +8,7 @@
         do każego z nich możesz dodać komentarz skierowany do organizatorów zawodów.
       </p>
       <%= form_for @survey, html: { class: "survey-form" } do |survey_form| %>
-        <%= survey_form.fields_for :survey_answers do |answer_form| %>
+        <%= survey_form.fields_for :survey_answers, @survey.survey_answers.sort_by(&:survey_question_id) do |answer_form| %>
           <div class="survey-answer">
             <%= answer_form.hidden_field :survey_question_id %>
             <h5 class="mb-0"><%= answer_form.options[:child_index] + 1 %>. <%= answer_form.object.survey_question.question %></h5>
