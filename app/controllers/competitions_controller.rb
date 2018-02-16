@@ -81,7 +81,7 @@ class CompetitionsController < ApplicationController
 
   private def build_competitors(registrations_csv_file, results_xlsx_file)
     # Read all registrations (from a registration system).
-    registrations = CSV.read(registrations_csv_file.path, headers: true, header_converters: :symbol, skip_blanks: true)
+    registrations = CSV.read(registrations_csv_file.path, headers: true, header_converters: :symbol, skip_blanks: true, converters: ->(string) { string.strip })
       .map(&:to_hash)
       .reject { |competitor| competitor.values.all? &:nil? }
     # Read competitors from competition results (people that have actually participated).
