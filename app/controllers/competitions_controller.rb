@@ -36,10 +36,10 @@ class CompetitionsController < ApplicationController
     competition.competitors_count = competitors.count
     competitor_wca_ids = competitors.map { |competitor| competitor[:wca_id] }.compact
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids
-    competition_manager_wca_ids = competition_data.values_at(:organizers, :delegates).flatten.map { |manager| manager[:wca_id] }.compact
+    competition_organizers = competition_data[:organizers].map { |organizer| organizer[:wca_id] }.compact
     competitors
       .select { |competitor| competitor[:country] == "Poland" }
-      .reject { |competitor| competition_manager_wca_ids.include? competitor[:wca_id] }
+      .reject { |competitor| competition_organizers.include? competitor[:wca_id] }
       .each do |competitor|
         competitions_count = competitions_count_by_wca_id[competitor[:wca_id]] || 0
         competitions_count += 1 # Count the competition that we are currently dealing with assuming results are not posted yet.
