@@ -38,7 +38,7 @@ class CompetitionsController < ApplicationController
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids
     competition_organizers = competition_data[:organizers].map { |organizer| organizer[:wca_id] }.compact
     competitors
-      .select { |competitor| competitor[:country] == "Poland" }
+      .select { |competitor| competitor[:country] == "Poland" && competitor[:email].present? }
       .reject { |competitor| competition_organizers.include? competitor[:wca_id] }
       .each do |competitor|
         competitions_count = competitions_count_by_wca_id[competitor[:wca_id]] || 0
@@ -80,6 +80,11 @@ class CompetitionsController < ApplicationController
   end
 
   private def build_competitors(registrations_csv_file, results_xlsx_file)
+    # Ensure the CSV file includes all required collumns.
+    headers = CSV.read(registrations_csv_file.path).first
+    ["name", "email", "birth date"].each do |required_header|
+      raise "Brak kolumny '#{required_header}' w pliku #{registrations_csv_file.original_filename}" unless headers.include?(required_header)
+    end
     # Read all registrations (from a registration system).
     registrations = CSV.read(registrations_csv_file.path, headers: true, header_converters: :symbol, skip_blanks: true, converters: ->(string) { string.strip })
       .map(&:to_hash)
@@ -87,7 +92,7 @@ class CompetitionsController < ApplicationController
     # Read competitors from competition results (people that have actually participated).
     # The template can be found here: https://www.worldcubeassociation.org/files/results.xls
     workbook = Roo::Spreadsheet.open results_xlsx_file.path
-    competitors_sheet = workbook.sheet('Registration')
+    competitors_sheet = workbook.sheet("Registration")
     competitors = competitors_sheet.drop(3).take_while(&:second).map do |row|
       { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
     end
@@ -99,8 +104,6 @@ class CompetitionsController < ApplicationController
       end
       if registration.nil?
         raise "Nie znaleziono zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
-      elsif registration[:email].blank?
-        raise "Brak adresu email dla zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
       elsif competitor[:country].blank?
         raise "Brak kraju dla zawodnika #{competitor[:name]}."
       end
