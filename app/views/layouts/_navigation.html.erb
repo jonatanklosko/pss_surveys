@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <%= link_to root_path, class: "navbar-brand p-0" do %>
     <%= image_tag asset_path("logo-pss.png"), class: "brand-logo" %>
     Ankiety PSS
@@ -9,18 +9,23 @@
       <span class="navbar-text d-none d-sm-inline"><%= current_user.name %></span>
     </div>
   <% end %>
-  <ul class="navbar-nav ml-auto">
-    <% if signed_in? %>
-      <li class="nav-item">
-        <%= link_to "Zawody", competitions_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Wyloguj", sign_out_path, method: :delete, class: "nav-link" %>
-      </li>
-    <% else %>
-      <li class="nav-item">
-        <%= link_to "Zaloguj się", sign_in_path, class: "nav-link" %>
-      </li>
-    <% end %>
-  </ul>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-links">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar-links">
+    <ul class="navbar-nav ml-auto">
+      <% if signed_in? %>
+        <li class="nav-item">
+          <%= link_to "Zawody", competitions_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Wyloguj", sign_out_path, method: :delete, class: "nav-link" %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to "Zaloguj się", sign_in_path, class: "nav-link" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </nav>
