@@ -94,7 +94,7 @@ class CompetitionsController < ApplicationController
     workbook = Roo::Spreadsheet.open results_xlsx_file.path
     competitors_sheet = workbook.sheet("Registration")
     competitors = competitors_sheet.drop(3).take_while(&:second).map do |row|
-      { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
+      { name: row[1].gsub(/\s+\(.+\)/, ''), country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
     end
     # Extend competitors with emails from registrations data.
     competitors.each do |competitor|
