@@ -247,6 +247,7 @@ DEPENDENCIES
   actionmailer-text
   byebug
   capybara (~> 2.13)
+  daemons
   delayed_job_active_record
   dotenv-rails
   factory_bot_rails

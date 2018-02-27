@@ -10,6 +10,7 @@ gem "actionmailer-text"
 gem "dotenv-rails"
 gem "roo"
 gem "delayed_job_active_record"
+gem "daemons"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
