@@ -34,5 +34,7 @@ module PssSurveys
 
     # Set default time zone to display times properly.
     config.time_zone = "CET"
+    # Use Delayed Job for asynchronous jobs.
+    config.active_job.queue_adapter = :delayed_job
   end
 end

@@ -9,6 +9,7 @@ gem "rest-client", "~> 2.0", ">= 2.0.2"
 gem "actionmailer-text"
 gem "dotenv-rails"
 gem "roo"
+gem "delayed_job_active_record"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
