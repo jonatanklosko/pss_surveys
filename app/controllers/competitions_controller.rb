@@ -53,7 +53,7 @@ class CompetitionsController < ApplicationController
       competition.organizers << User.find_or_initialize_from_wca_data(organizer)
     end
     if competition.save
-      competition.surveys.each { |survey| SurveysMailer.send_survey(survey).deliver_now }
+      competition.surveys.each { |survey| SurveysMailer.send_survey(survey).deliver_later }
       redirect_to competitions_url, flash: { success: "Ankiety zostały wysłane." }
     else
       redirect_to new_competition_url, flash: { danger: "Operacja nie powiodła się." }
