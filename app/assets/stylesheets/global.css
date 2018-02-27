@@ -5,3 +5,9 @@ a {
 a:hover {
   text-decoration: none;
 }
+
+textarea {
+  resize: none; /* We use expanding-textareas package for automatic resizing. */
+  height: 38px;
+  min-height: 38px;
+}

@@ -14,4 +14,5 @@
 //= require turbolinks
 //= require jquery/dist/jquery.slim
 //= require bootstrap/dist/js/bootstrap.bundle
+//= require autosize/dist/autosize
 //= require_tree .
