@@ -8,6 +8,8 @@ git pull
 bundle check || bundle install
 # Compile assets
 RAILS_ENV=production bin/rails assets:clean assets:precompile
+# Migrate the database if needed
+RAILS_ENV=production bin/rails db:migrate
 # Restart Delayed Job
 RAILS_ENV=production bin/delayed_job restart
 # Either restart or run the server
