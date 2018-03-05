@@ -1,4 +1,4 @@
-<% answers_by_question = surveys.flat_map(&:survey_answers).group_by(&:survey_question) %>
+<% answers_by_question = surveys.flat_map(&:survey_answers).sort_by!(&:survey_question_id).group_by(&:survey_question) %>
 <% element_id = "questions-accordion-" + answers_by_question.keys.map(&:id).join('-') %>
 <div id="<%= element_id %>" data-children=".item">
   <% answers_by_question.each_with_index do |(question, answers), index| %>

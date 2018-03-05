@@ -11,6 +11,7 @@ module SurveysHelper
   def mean_rating_by_question(surveys, weighted:)
     surveys
       .flat_map(&:survey_answers)
+      .sort_by!(&:survey_question_id)
       .group_by(&:survey_question)
       .map do |question, answers|
         sum = answers.sum { |answer| weighted ? answer.rating * answer.survey.weight : answer.rating }
