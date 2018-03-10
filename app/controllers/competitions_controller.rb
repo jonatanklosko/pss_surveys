@@ -24,6 +24,7 @@ class CompetitionsController < ApplicationController
   def create
     competition_data = JSON.parse(params[:competition_wca_json]).deep_symbolize_keys!
     competition = Competition.initialize_from_wca_data competition_data
+    competition.remark = params[:remark]
     if params[:registrations_csv_file].nil? || params[:results_xlsx_file].nil?
       return redirect_to new_competition_url, flash: { danger: "Nie wskazano potrzebnych plików." }
     end

@@ -24,6 +24,13 @@
             Plik pochodzący z Cubecomps.
           </small>
         </div>
+        <div class="form-group">
+          <%= text_field_tag :remark, params[:remark], placeholder: "Uwaga", class: "form-control" %>
+          <small class="form-text text-muted">
+            Powyższa uwaga będzie widoczna w rankingu zawodów. Dodaj ją, jeżeli zawody były niekonwencjonalne
+            (np. miały miejsce jedynie konkurencje boczne).
+          </small>
+        </div>
         <%= submit_tag "Wyślij ankiety", class: "btn btn-primary" %>
       <% end %>
     </div>

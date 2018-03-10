@@ -25,7 +25,12 @@
                 <%= ranking_index = (previous_rating == current_rating ? ranking_index : (index + 1)) %>
                 <% previous_rating = current_rating %>
               </td>
-              <td><%= wca_competition_link competition %></td>
+              <td>
+                <%= wca_competition_link competition %>
+                <% if competition.remark.present? %>
+                  <%= icon "fas", "exclamation-triangle", class: "text-danger", title: competition.remark, data: { toggle: :tooltip } %>
+                <% end %>
+              </td>
               <td class="font-weight-bold"><%= format_number surveys_data[:total_rating] %></td>
               <td><%= submitted_surveys_stats competition.surveys %></td>
               <td class="font-weight-bold detailed-ratings-link" data-toggle="modal" data-target="#competitor-ratings-<%= competition.id %>">
