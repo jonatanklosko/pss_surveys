@@ -82,7 +82,7 @@ class CompetitionsController < ApplicationController
 
   private def build_competitors(registrations_csv_file, results_xlsx_file)
     # Ensure the CSV file includes all required columns.
-    headers = CSV.read(registrations_csv_file.path).first.map(&:downcase)
+    headers = CSV.read(registrations_csv_file.path).first.compact.map(&:downcase)
     ["name", "email", "birth date"].each do |required_header|
       raise "Brak kolumny '#{required_header}' w pliku #{registrations_csv_file.original_filename}" unless headers.include?(required_header)
     end
