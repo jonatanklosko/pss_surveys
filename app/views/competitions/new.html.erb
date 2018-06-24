@@ -4,9 +4,6 @@
       <h3>Dodaj zawody</h3>
       <%= form_tag competitions_path, multipart: true do %>
         <div class="form-group">
-          <%= select_tag :competition_wca_json, options_for_select(@competition_names_with_json), class: "custom-select" %>
-        </div>
-        <div class="form-group">
           <div class="custom-file">
             <%= file_field_tag :registrations_csv_file, accept: ".csv" %>
             <%= label_tag :registrations_csv_file, "Plik CSV z listą zawodników", class: "custom-file-label" %>

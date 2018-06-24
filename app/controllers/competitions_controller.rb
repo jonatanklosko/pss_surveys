@@ -7,37 +7,25 @@ class CompetitionsController < ApplicationController
   before_action -> { redirect_to_root_unless_user :can_manage_competition?, Competition.find(params[:id]) }, only: [:show]
 
   def new
-    recent_competitions_json = RestClient.get wca_api_url("/competitions"), params: {
-      country_iso2: "PL",
-      start: 1.month.ago.to_date,
-      end: Date.today
-    }
-    existing_wca_competition_ids = Competition.pluck :wca_competition_id
-    @competition_names_with_json = JSON.parse(recent_competitions_json)
-      .reject { |competition_data| existing_wca_competition_ids.include? competition_data["id"] }
-      .map { |competition_data| [competition_data["name"], competition_data.to_json] }
-    if @competition_names_with_json.empty?
-      redirect_to competitions_url, flash: { info: "Brak nowych zawodów." }
-    end
   end
 
   def create
-    competition_data = JSON.parse(params[:competition_wca_json]).deep_symbolize_keys!
-    competition = Competition.initialize_from_wca_data competition_data
-    competition.remark = params[:remark]
     if params[:registrations_csv_file].nil? || params[:results_xlsx_file].nil?
       return redirect_to new_competition_url, flash: { danger: "Nie wskazano potrzebnych plików." }
     end
     begin
+      competition_wca_data = get_competition_wca_data params[:results_xlsx_file]
       competitors = build_competitors params[:registrations_csv_file], params[:results_xlsx_file]
     rescue Exception => error
       redirect_to new_competition_url, flash: { danger: error } and return
     end
+    competition = Competition.initialize_from_wca_data competition_wca_data
+    competition.remark = params[:remark]
     # Build surveys.
     competition.competitors_count = competitors.count
     competitor_wca_ids = competitors.map { |competitor| competitor[:wca_id] }.compact
     competitions_count_by_wca_id = get_competitions_count_by_wca_id competitor_wca_ids
-    competition_organizers = competition_data[:organizers].map { |organizer| organizer[:wca_id] }.compact
+    competition_organizers = competition_wca_data[:organizers].map { |organizer| organizer[:wca_id] }.compact
     competitors
       .select { |competitor| competitor[:country] == "Poland" && competitor[:email].present? }
       .reject { |competitor| competition_organizers.include? competitor[:wca_id] }
@@ -46,11 +34,11 @@ class CompetitionsController < ApplicationController
         competitions_count += 1 # Count the competition that we are currently dealing with assuming results are not posted yet.
         competition.surveys.build competitor_email: competitor[:email], competitor_competitions_count: competitions_count
       end
-    competition_data[:delegates].each do |delegate|
+    competition_wca_data[:delegates].each do |delegate|
       competitions_count = competitions_count_by_wca_id[delegate[:wca_id]]
       competition.surveys.build competitor_email: delegate[:email], delegate: true, competitor_competitions_count: competitions_count
     end
-    competition_data[:organizers].each do |organizer|
+    competition_wca_data[:organizers].each do |organizer|
       competition.organizers << User.find_or_initialize_from_wca_data(organizer)
     end
     if competition.save
@@ -78,6 +66,30 @@ class CompetitionsController < ApplicationController
     else
       redirect_to competition_url(competition), flash: { danger: "Nie można zamknąć ankiet." }
     end
+  end
+
+  private def get_competition_wca_data(results_xlsx_file)
+    workbook = Roo::Spreadsheet.open results_xlsx_file.path
+    competitors_sheet = workbook.sheet("Registration")
+    competition_name = competitors_sheet.cell(1, 1)
+    raise "Brak nazwy zawodów w pliku XLSX." if competition_name.blank?
+    competitions_json = RestClient.get wca_api_url("/competitions"), params: {
+      country_iso2: "PL",
+      end: Date.today,
+      q: competition_name
+    }
+    # WCA matches against each query part separately, so more competitions may be found.
+    # Find the one that has exactly the name we look for.
+    JSON.parse(competitions_json)
+      .map!(&:deep_symbolize_keys!)
+      .find { |competition_wca_data| competition_wca_data[:name] == competition_name }
+      .tap do |competition_wca_data|
+        if competition_wca_data.nil?
+          raise "Nie znaleziono zawodów o nazwie #{competition_name}."
+        elsif Competition.exists? wca_competition_id: competition_wca_data[:id]
+          raise "Zawody #{competition_name} znajdują się już w systemie."
+        end
+      end
   end
 
   private def build_competitors(registrations_csv_file, results_xlsx_file)
