@@ -107,13 +107,13 @@ class CompetitionsController < ApplicationController
     workbook = Roo::Spreadsheet.open results_xlsx_file.path
     competitors_sheet = workbook.sheet("Registration")
     competitors = competitors_sheet.drop(3).take_while(&:second).map do |row|
-      { name: row[1].gsub(/\s+\(.+\)/, ''), country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
+      { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
     end
     # Extend competitors with emails from registrations data.
     competitors.each do |competitor|
       # Assume (name, birth date) to be a unique identifier.
       registration = registrations.find do |registration|
-        registration[:name] == competitor[:name] && registration[:birth_date] == competitor[:birth_date]
+        format_name(registration[:name]) == format_name(competitor[:name]) && registration[:birth_date] == competitor[:birth_date]
       end
       if registration.nil?
         raise "Nie znaleziono zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
@@ -122,5 +122,9 @@ class CompetitionsController < ApplicationController
       end
       competitor[:email] = registration[:email]
     end
+  end
+
+  private def format_name(name)
+    name.gsub(/\s*\(.+\)/, '').gsub(/\s+/, ' ').strip
   end
 end
