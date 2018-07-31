@@ -109,19 +109,24 @@ class CompetitionsController < ApplicationController
     competitors = competitors_sheet.drop(3).take_while(&:second).map do |row|
       { name: row[1], country: row[2], wca_id: row[3], gender: row[4], birth_date: row[5].to_s }
     end
-    # Extend competitors with emails from registrations data.
+    # Extend competitors with emails from registrations data. Validate competitors.
+    competitor_errors = []
     competitors.each do |competitor|
       # Assume (name, birth date) to be a unique identifier.
       registration = registrations.find do |registration|
         format_name(registration[:name]) == format_name(competitor[:name]) && registration[:birth_date] == competitor[:birth_date]
       end
-      if registration.nil?
-        raise "Nie znaleziono zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
-      elsif competitor[:country].blank?
-        raise "Brak kraju dla zawodnika #{competitor[:name]}."
+      if registration
+        competitor[:email] = registration[:email]
+      else
+        competitor_errors << "Nie znaleziono zawodnika #{competitor[:name]} w pliku #{registrations_csv_file.original_filename}"
       end
-      competitor[:email] = registration[:email]
+      if competitor[:country].blank?
+        competitor_errors << "Brak kraju dla zawodnika #{competitor[:name]}."
+      end
     end
+    raise competitor_errors.join("\n") if competitor_errors.any?
+    competitors
   end
 
   private def format_name(name)
