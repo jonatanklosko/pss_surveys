@@ -22,7 +22,7 @@ class Competition < ApplicationRecord
         reasons << "Wymagana jest co najmniej jedna ankieta delegacka."
       end
       if competitor_surveys.count(&:submitted?).to_f / competitor_surveys.count < 0.2
-        reasons << "Wymagane jest co conajmniej 20% nadesłanych ankiet zawodniczych."
+        reasons << "Wymagane jest co najmniej 20% nadesłanych ankiet zawodniczych."
       end
     end
   end
