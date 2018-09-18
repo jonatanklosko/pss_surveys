@@ -4,7 +4,7 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
 
     trait :delegate do
-      delegate true
+      delegate { true }
     end
   end
 end
