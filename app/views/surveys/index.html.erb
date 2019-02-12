@@ -1,5 +1,21 @@
 <div class="container-fluid pt-4">
-  <h3>Ranking zawodów na podstawie ankiet</h3>
+  <div class="row">
+    <div class="col">
+      <h3>Ranking zawodów na podstawie ankiet</h3>
+    </div>
+    <div class="col col-auto">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+          <%= @year %>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <% @years.each do |year| %>
+            <%= link_to year, surveys_path(year: year), class: "dropdown-item" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
   <% cache @competitions do %>
     <% competitions_with_surveys_data = competitions_with_surveys_data(@competitions) %>
     <div class="table-responsive">

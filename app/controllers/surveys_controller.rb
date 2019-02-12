@@ -25,7 +25,11 @@ class SurveysController < ApplicationController
   end
 
   def index
-    @competitions = Competition.surveys_closed.includes surveys: { survey_answers: [:survey_question] }
+    @years = Competition.pluck(:start_date).map(&:year).uniq.sort.reverse
+    @year = params[:year] || @years.max
+    @competitions = Competition.surveys_closed
+      .includes(surveys: { survey_answers: [:survey_question] })
+      .where("date_part('year', start_date) = ?", @year)
   end
 
   private def survey_params
