@@ -12,7 +12,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    %w(2013KOSK01 2007POLK01 2011SZAT01 2012TRZA01 2012DROZ02 2005LUCZ01 2005ZOLN01 2014PACE01).include? wca_id
+    %w(2013KOSK01 2007POLK01 2013ROGA02 2012TRZA01 2012DROZ02 2005LUCZ01 2005ZOLN01 2014PACE01).include? wca_id
   end
 
   def can_manage_competition?(competition)
