@@ -114,7 +114,7 @@ class CompetitionsController < ApplicationController
     competitors.each do |competitor|
       # Assume (name, birth date) to be a unique identifier.
       registration = registrations.find do |registration|
-        format_name(registration[:name]).downcase == format_name(competitor[:name]).downcase && registration[:birth_date] == competitor[:birth_date]
+        format_name(registration[:name]).downcase == format_name(competitor[:name]).downcase && Date.parse(registration[:birth_date]) == Date.parse(competitor[:birth_date])
       end
       if registration
         competitor[:email] = registration[:email]
